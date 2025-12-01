@@ -10,8 +10,8 @@ pub use dir::Dir;
 pub use ext::*;
 pub use grid::Grid;
 pub use sparse_grid::SparseGrid;
-pub use vec2::{vec2, Vec2};
-pub use vec3::{vec3, Vec3};
+pub use vec2::{Vec2, vec2};
+pub use vec3::{Vec3, vec3};
 
 pub fn read_file(filename: &str) -> Result<String, std::io::Error> {
     std::fs::read_to_string(filename)
@@ -30,17 +30,17 @@ pub fn parse_ints_radix_u64(s: &str, radix: u32) -> Result<Vec<u64>, std::num::P
 
     loop {
         let next = char_indices.next();
-        if let Some((i, c)) = next {
-            if c.is_digit(radix) {
-                current = match current {
-                    // We're currently in the middle of a digit string,
-                    // so continue it
-                    Some((start, _)) => Some((start, i)),
-                    // We're not in the middle of a digit string, so start a new one
-                    None => Some((i, i)),
-                };
-                continue;
-            }
+        if let Some((i, c)) = next
+            && c.is_digit(radix)
+        {
+            current = match current {
+                // We're currently in the middle of a digit string,
+                // so continue it
+                Some((start, _)) => Some((start, i)),
+                // We're not in the middle of a digit string, so start a new one
+                None => Some((i, i)),
+            };
+            continue;
         }
 
         if let Some((start, end)) = current {
@@ -71,17 +71,17 @@ pub fn parse_ints_radix_u32(s: &str, radix: u32) -> Result<Vec<u32>, std::num::P
 
     loop {
         let next = char_indices.next();
-        if let Some((i, c)) = next {
-            if c.is_digit(radix) {
-                current = match current {
-                    // We're currently in the middle of a digit string,
-                    // so continue it
-                    Some((start, _)) => Some((start, i)),
-                    // We're not in the middle of a digit string, so start a new one
-                    None => Some((i, i)),
-                };
-                continue;
-            }
+        if let Some((i, c)) = next
+            && c.is_digit(radix)
+        {
+            current = match current {
+                // We're currently in the middle of a digit string,
+                // so continue it
+                Some((start, _)) => Some((start, i)),
+                // We're not in the middle of a digit string, so start a new one
+                None => Some((i, i)),
+            };
+            continue;
         }
 
         if let Some((start, end)) = current {
