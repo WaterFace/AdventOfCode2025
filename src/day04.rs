@@ -68,9 +68,7 @@ pub fn part2(input: &str) {
         count += to_be_removed.len();
 
         for (x, y) in to_be_removed.drain(..) {
-            if let Some(t) = grid.get_mut(x, y) {
-                *t = Tile::Empty
-            }
+            grid[(x, y)] = Tile::Empty;
         }
     }
 
