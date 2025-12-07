@@ -1,4 +1,4 @@
-use std::collections::{HashMap, VecDeque};
+use std::collections::HashMap;
 
 use crate::util::{self, Grid, Vec2, vec2};
 
