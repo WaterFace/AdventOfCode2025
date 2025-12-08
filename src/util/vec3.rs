@@ -32,6 +32,12 @@ impl Vec3 {
         self.x * self.x + self.y * self.y + self.z * self.z
     }
 
+    pub const fn sqr_length_u64(self) -> u64 {
+        self.x.unsigned_abs() as u64 * self.x.unsigned_abs() as u64
+            + self.y.unsigned_abs() as u64 * self.y.unsigned_abs() as u64
+            + self.z.unsigned_abs() as u64 * self.z.unsigned_abs() as u64
+    }
+
     pub const fn manhattan_distance(self, other: Vec3) -> u32 {
         self.x.abs_diff(other.x) + self.y.abs_diff(other.y) + self.z.abs_diff(other.z)
     }

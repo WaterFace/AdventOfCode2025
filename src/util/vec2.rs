@@ -29,6 +29,11 @@ impl Vec2 {
         self.x * self.x + self.y * self.y
     }
 
+    pub const fn sqr_length_u64(self) -> u64 {
+        self.x.unsigned_abs() as u64 * self.x.unsigned_abs() as u64
+            + self.y.unsigned_abs() as u64 * self.y.unsigned_abs() as u64
+    }
+
     pub const fn manhattan_distance(self, other: Vec2) -> u32 {
         self.x.abs_diff(other.x) + self.y.abs_diff(other.y)
     }
