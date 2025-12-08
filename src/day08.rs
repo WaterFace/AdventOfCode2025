@@ -23,25 +23,26 @@ impl Display for JunctionBox {
     }
 }
 
-fn connected_components(distances: &[(u64, JunctionBox, JunctionBox)], n: usize) -> Vec<usize> {
+fn connected_components(
+    vertices: &[JunctionBox],
+    distances: &[(u64, JunctionBox, JunctionBox)],
+    n: usize,
+) -> Vec<usize> {
     let mut adjacency: HashMap<JunctionBox, Vec<JunctionBox>> = HashMap::new();
-    let mut vertices = HashSet::new();
 
-    vertices.extend(distances.iter().flat_map(|(_, a, b)| [a, b]));
     for (_d, a, b) in distances.iter().take(n) {
         adjacency.entry(*a).or_default().push(*b);
         adjacency.entry(*b).or_default().push(*a);
     }
 
     // bfs over nodes in this subgraph to find connected components
-    let mut vertices: Vec<JunctionBox> = vertices.into_iter().collect();
     let mut explored_components: HashSet<JunctionBox> = HashSet::new();
     let mut explored: HashSet<JunctionBox> = HashSet::new();
     let mut queue = VecDeque::new();
 
     let mut component_sizes = BinaryHeap::new();
 
-    while let Some(v) = vertices.pop() {
+    for v in vertices.iter().copied() {
         if explored_components.contains(&v) {
             continue;
         } else {
@@ -98,7 +99,8 @@ pub fn part1(input: &str) {
         .collect::<Vec<_>>()
         .sorted();
 
-    let component_sizes = connected_components(&distances, 1000).sorted_by_key(|t| Reverse(*t));
+    let component_sizes =
+        connected_components(&junctions, &distances, 1000).sorted_by_key(|t| Reverse(*t));
     println!("{}", component_sizes.into_iter().take(3).product::<usize>());
 }
 
@@ -133,13 +135,12 @@ pub fn part2(input: &str) {
         .collect::<Vec<_>>()
         .sorted();
 
-    for i in 1000.. {
-        let component_sizes = connected_components(&distances, i + 1);
-        println!("{i}: {}", component_sizes.len());
-        if component_sizes.len() == 1 {
-            let (_, a, b) = distances[i];
-            println!("{a} <-> {b}: {}", a.pos.x as u64 * b.pos.x as u64);
-            break;
-        }
-    }
+    let i = util::binsearch_leftmost_exponential(|i| {
+        let component_sizes = connected_components(&junctions, &distances, i + 1);
+        component_sizes.len() == 1
+    });
+
+    let (_, a, b) = distances[i];
+    // println!("{a} <-> {b}: {}", a.pos.x as u64 * b.pos.x as u64);
+    println!("{}", a.pos.x as u64 * b.pos.x as u64);
 }
