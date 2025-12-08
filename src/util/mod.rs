@@ -1,3 +1,4 @@
+pub mod binsearch;
 pub mod dir;
 pub mod ext;
 pub mod grid;
@@ -8,6 +9,7 @@ pub mod stats;
 pub mod vec2;
 pub mod vec3;
 
+pub use binsearch::*;
 pub use dir::Dir;
 pub use ext::*;
 pub use grid::Grid;
